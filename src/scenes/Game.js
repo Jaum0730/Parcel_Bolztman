@@ -72,6 +72,7 @@ export class Game extends Scene
           
           //grupo com os projteis
           this.projectiles = this.add.group();
+          this.bossProjectiles = this.add.group();
           
           //colisores do alien_chefe
           this.physics.add.overlap(this.projectiles, this.boss, this.hitBoss, null, this);
@@ -82,6 +83,8 @@ export class Game extends Scene
           this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this);
           
           this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this);
+
+          
   
   
   
@@ -130,6 +133,9 @@ export class Game extends Scene
         
       };
 
+
+  
+
       Reset_Player(){
         
         var x = width/2 - 8;
@@ -173,22 +179,26 @@ export class Game extends Scene
       };
 
       hitBoss(projectile, boss){
-        var explosion = new Explosion(this, boss.x, boss.y);
-        explosion.setScale(2);
+          // Verifique se o projétil foi disparado pelo jogador
+          if (projectile.type === 'player') {
+            var explosion = new Explosion(this, boss.x, boss.y);
+            explosion.setScale(2);
 
-        projectile.destroy();
-        scoreManager.currentScore += 30;
+            projectile.destroy();
+            scoreManager.currentScore += 30;
 
-        var scoreFormated = this.zeroPad(scoreManager.currentScore, 6);
-        this.scorePainel.text = "SCORE: " + scoreFormated
+            var scoreFormated = this.zeroPad(scoreManager.currentScore, 6);
+            this.scorePainel.text = "SCORE: " + scoreFormated;
 
-        this.explosionSound.play()
+            this.explosionSound.play();
+        }
       }
 
-      Boss_spawn(){
+      Boss_spawn(scene){
         if(scoreManager.currentScore >= 10 && !this.boss_spawnwed){
-          this.boss = new Boss(this, this.game.renderer.width, this.game.renderer.height);
+          this.boss = new Boss(this, this.game.renderer.width, this.game.renderer.height, this.player);
           this.boss_spawnwed = true;
+
         };
       };
 
@@ -213,18 +223,21 @@ export class Game extends Scene
         this.aceleration_ship(this.enemy1, 1);
     
       
-      
-
-        this.movePlayer();
-        this.Boss_spawn();
         
-
+        this.movePlayer();
+        this.Boss_spawn(this);
+        
+        
         for(var i = 0; i < this.projectiles.getChildren().length; i++){
           var beam = this.projectiles.getChildren()[i];
           beam.update();
-
+          
         };
 
+        
+        
+        
+        
         if(this.lifes < 0){
         
           this.music.stop();
@@ -233,12 +246,13 @@ export class Game extends Scene
       
     };
 
-    Laser_Shot(){
-        var beam = new Beam(this, this.player.x, this.player, 'player');
-        beam.setScale(2);
-        this.beamSound.play();
-        
-      };
+    Laser_Shot(object, type) {
+      var beam = new Beam(this, object.x, object.y, type);
+      beam.setScale(2);
+      beam.type = type; // Define o tipo do projétil
+      this.beamSound.play();
+      this.projectiles.add(beam); // Adicione o projétil ao grupo
+    }
   
       aceleration_ship(ship, speed){
         ship.y += speed; 
@@ -281,7 +295,7 @@ export class Game extends Scene
           if(Phaser.Input.Keyboard.JustDown(this.spacebar)){
             if(this.player.active){
               console.log("fogo!");
-              this.Laser_Shot();}
+              this.Laser_Shot(this.player, 'player');}
           }
           
         };
@@ -289,6 +303,6 @@ export class Game extends Scene
       
 
 }
-
+//variáveis com altura e largura da tela
 var height = 720;
 var width = 1024;

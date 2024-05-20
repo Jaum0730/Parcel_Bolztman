@@ -20,18 +20,21 @@ export class Boss extends Phaser.GameObjects.Sprite{
             callbackScope: this,
             loop: true
           });
+         
     
     };
 
     shootBeam() {
-      var beam = new Beam(this.scene, this.x, this.y);
+      var beam = new Beam(this.scene, this.x, this.y,'boss');
       beam.setScale(4);
+      beam.type = 'boss';
+      
     }
 
-    /*preDestroy() {
+    preDestroy() {
       super.preDestroy();
       this.beamTimer.remove();
     }
-  */
+  
     
     }

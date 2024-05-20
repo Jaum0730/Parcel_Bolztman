@@ -3,6 +3,8 @@ export class Beam extends Phaser.GameObjects.Sprite {
     super(scene, x, y, "beam");
     scene.add.existing(this);
 
+    
+
     this.play("beam_anim");
     scene.physics.world.enableBody(this);
 
@@ -10,7 +12,8 @@ export class Beam extends Phaser.GameObjects.Sprite {
     if (sourceType === 'player') {
       this.body.velocity.y = -250; // Velocidade para cima quando disparado pelo jogador
     } else if (sourceType === 'boss') {
-      this.body.velocity.y = 250; // Velocidade para baixo quando disparado pelo chefe
+      this.body.velocity.y =  250; // Velocidade para baixo quando disparado pelo chefe
+      
     }
 
     scene.projectiles.add(this);
@@ -18,7 +21,7 @@ export class Beam extends Phaser.GameObjects.Sprite {
 
   update() {
     // Destruir o feixe quando sair da tela
-    if (this.y < 32 || this.y > scene.config.height - 32) {
+    if (this.y < 32 || this.y > this.scene.game.renderer.height - 32) {
       this.destroy();
     }
   }
