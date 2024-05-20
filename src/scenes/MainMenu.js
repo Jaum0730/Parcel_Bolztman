@@ -29,7 +29,7 @@ export class MainMenu extends Scene
         
 
 
-        this.Logo = this.add.bitmapText(this.game.renderer.width /4, 200, 'pixelFont', 'BOLTZMAN LAGRANGE', 70)
+        this.Logo = this.add.bitmapText(this.game.renderer.width /6, 200, 'pixelFont', 'BOLTZMAN LAGRANGE', 70)
         
 
         //=================================Botões do Menu================================//
