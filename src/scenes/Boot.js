@@ -1,6 +1,6 @@
 import { Scene } from 'phaser';
 
-export class Boot extends Scene
+export class Boot extends Phaser.Scene
 {
     constructor ()
     {
@@ -21,3 +21,4 @@ export class Boot extends Scene
         this.scene.start('Preloader');
     }
 }
+

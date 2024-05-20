@@ -1,9 +1,14 @@
 import { Scene } from 'phaser';
+import { currentScore, gameSettings, musicConfig } from './MainMenu';
+import { Beam } from '../custom/Beam';
+import { Explosion } from '../custom/Explosion';
+
 
 
 
 export class Game extends Scene
 {
+  
     constructor ()
     {
         super('Game');
@@ -11,7 +16,13 @@ export class Game extends Scene
 
     create ()
     {
-        this.background2 = this.add.tileSprite(0,0,config.width,config.height,"background2");
+
+      this.currentScore = currentScore;
+      this.musicConfig = musicConfig;
+      this.gameSettings = gameSettings;
+      
+        
+        this.background2 = this.add.tileSprite(0,0,this.game.renderer.width,this.game.renderer.height,"background2");
         this.background2.setPosition(100,100);
         this.background2.setScale(2);
         this.lifes = 4;
@@ -20,9 +31,9 @@ export class Game extends Scene
         //adicionando inimigos
         this.boss_spawnwed = false;
   
-          this.enemy1 = this.physics.add.sprite(config.width + 10, config.height, "alien");
-          this.enemy2 = this.physics.add.sprite(config.width + 10, config.height, "alien2");
-          this.enemy3 = this.physics.add.sprite(config.width + 50, config.height, "alien3");
+          this.enemy1 = this.physics.add.sprite(width + 10, height, "alien");
+          this.enemy2 = this.physics.add.sprite(width + 10, height, "alien2");
+          this.enemy3 = this.physics.add.sprite(width + 50, height, "alien3");
           
           //criando grupo
           this.boss   = this.physics.add.group();
@@ -46,7 +57,7 @@ export class Game extends Scene
           
   
           //Logica para nave do jogador
-          this.player = this.physics.add.sprite(config.width/2+50, config.height/2, "ship_player");
+          this.player = this.physics.add.sprite(width/2+50, height/2, "ship_player");
           this.player.setScale(2);
           //Animação das naves
           this.player.play("ship_animation");
@@ -74,9 +85,9 @@ export class Game extends Scene
   
   
          //vidas
-          this.life_painel = this.add.bitmapText(config.width - 200, 5, "pixelFont", "Lifes: " + this.lifes, 32);
+          this.life_painel = this.add.bitmapText(width - 200, 5, "pixelFont", "Lifes: " + this.lifes, 32);
             
-          var scoreFormated = this.zeroPad(currentScore, 6);
+          var scoreFormated = this.zeroPad(this.currentScore, 6);
           this.scorePainel = this.add.bitmapText(10, 5, "pixelFont", "SCORE: " + scoreFormated, 32);
   
           this.beamSound = this.sound.add("audio_beam");
@@ -120,14 +131,14 @@ export class Game extends Scene
 
       Reset_Player(){
         
-        var x = config.width/2 - 8;
-        var y =  config.height + 64;
+        var x = width/2 - 8;
+        var y =  height + 64;
         this.player.enableBody(true, x, y, true, true);
   
         this.player.alpha = 0.5;
           var tween = this.tweens.add({
             targets: this.player,
-            y: config.height - 64,
+            y: height - 64,
             ease: 'Power1',
             duration: 1500,
             repeat:0,
@@ -151,9 +162,9 @@ export class Game extends Scene
 
         projectile.destroy();
         this.Reset_ship(enemy);
-        currentScore += 15;
+        this.currentScore += 15;
         //add pontos
-        var scoreFormated = this.zeroPad(currentScore, 6);
+        var scoreFormated = this.zeroPad(this.currentScore, 6);
         this.scorePainel.text = "SCORE: " + scoreFormated
 
         this.explosionSound.play()
@@ -165,16 +176,16 @@ export class Game extends Scene
         explosion.setScale(2);
 
         projectile.destroy();
-        currentScore += 30;
+        this.currentScore += 30;
 
-        var scoreFormated = this.zeroPad(currentScore, 6);
+        var scoreFormated = this.zeroPad(this.currentScore, 6);
         this.scorePainel.text = "SCORE: " + scoreFormated
 
         this.explosionSound.play()
       }
 
       Boss_spawn(){
-        if(currentScore >= 10 && !this.boss_spawnwed){
+        if(this.currentScore >= 10 && !this.boss_spawnwed){
           this.boss = new Boss(this);
           this.boss_spawnwed = true;
         };
@@ -230,14 +241,14 @@ export class Game extends Scene
   
       aceleration_ship(ship, speed){
         ship.y += speed; 
-        if(ship.y > config.height){
+        if(ship.y > height){
           this.Reset_ship(ship)
         }
       };
       
       Reset_ship(ship){
         ship.y = 0;
-        var aleatorizeX = Phaser.Math.Between(0, config.width);
+        var aleatorizeX = Phaser.Math.Between(0, width);
         ship.x = aleatorizeX
       };
   
@@ -277,3 +288,6 @@ export class Game extends Scene
       
 
 }
+
+var height = 720;
+var width = 1024;

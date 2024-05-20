@@ -91,13 +91,20 @@ export class MainMenu extends Scene
 
 }
 
-var highScore = 0;
-var currentScore = 0;
-var musicConfig = {
+export var highScore = 0;
+export var currentScore = 0;
+export var musicConfig = {
     mute: false,
     volume: 1,
     rate: 1,
     detune: 0,
     seek: 0,
     loop: false,
-    delay: 0}
+    delay: 0};
+
+export var gameSettings = {
+    playerSpeed: 200,
+
+
+
+};
