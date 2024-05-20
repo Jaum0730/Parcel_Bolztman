@@ -13,10 +13,10 @@ export class MainMenu extends Scene
 			localStorage.setItem('top_highScore',0);
 		}
 		
-		if(highScore > localStorage.getItem('top_highScore')){
-			localStorage.setItem('top_highScore', highScore);
+		if(scoreManager.highScore > localStorage.getItem('top_highScore')){
+			localStorage.setItem('top_highScore', scoreManager.highScore);
 		} else {
-			highScore = localStorage.getItem('top_highScore');
+			scoreManager.highScore = localStorage.getItem('top_highScore');
         }
         
         this.music = this.sound.add("music");
@@ -55,7 +55,7 @@ export class MainMenu extends Scene
         //=================================Pontuação================================//
 
 
-        this.txtHighScore = this.add.text(this.game.renderer.width / 2, 430, '->>> RECORDE:'+ highScore +' <<<-', { font: '20px Orbitron', fill: '#f7f2ad' })
+        this.txtHighScore = this.add.text(this.game.renderer.width / 2, 430, '->>> RECORDE:'+ scoreManager.highScore +' <<<-', { font: '20px Orbitron', fill: '#f7f2ad' })
         .setOrigin(0.5);
         this.txtHighScore.setTintFill(0xf7f2ad, 0xf7f2ad, 0xbf40bf, 0xbf40bf);
 
@@ -91,8 +91,23 @@ export class MainMenu extends Scene
 
 }
 
-export var highScore = 0;
-export var currentScore = 0;
+let _highScore = 0;
+let _currentScore = 0;
+
+export const scoreManager = {
+  get highScore() {
+    return _highScore;
+  },
+  set highScore(newScore) {
+    _highScore = newScore;
+  },
+  get currentScore() {
+    return _currentScore;
+  },
+  set currentScore(newScore) {
+    _currentScore = newScore;
+  }
+};
 export var musicConfig = {
     mute: false,
     volume: 1,

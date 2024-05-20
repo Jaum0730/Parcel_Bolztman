@@ -1,4 +1,4 @@
-
+import { Beam } from "./Beam";
 export class Boss extends Phaser.GameObjects.Sprite{
 
   
@@ -14,18 +14,24 @@ export class Boss extends Phaser.GameObjects.Sprite{
     
           scene.boss.add(this);
           
+          this.beamTimer = scene.time.addEvent({
+            delay: 2000, // 2 segundos
+            callback: this.shootBeam,
+            callbackScope: this,
+            loop: true
+          });
     
     };
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    shootBeam() {
+      var beam = new Beam(this.scene, this.x, this.y);
+      beam.setScale(4);
+    }
+
+    /*preDestroy() {
+      super.preDestroy();
+      this.beamTimer.remove();
+    }
+  */
     
     }

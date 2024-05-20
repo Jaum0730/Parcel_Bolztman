@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
-import { currentScore, gameSettings, musicConfig } from './MainMenu';
+import { gameSettings, musicConfig } from './MainMenu';
+import { scoreManager } from './MainMenu';
 import { Beam } from '../custom/Beam';
 import { Explosion } from '../custom/Explosion';
 import { Boss } from '../custom/Boss';
@@ -19,9 +20,7 @@ export class Game extends Scene
     create ()
     {
 
-      this.currentScore = currentScore;
-      this.musicConfig = musicConfig;
-      this.gameSettings = gameSettings;
+  
       
         
         this.background2 = this.add.tileSprite(0,0,this.game.renderer.width,this.game.renderer.height,"background2");
@@ -89,7 +88,7 @@ export class Game extends Scene
          //vidas
           this.life_painel = this.add.bitmapText(width - 200, 5, "pixelFont", "Lifes: " + this.lifes, 32);
             
-          var scoreFormated = this.zeroPad(this.currentScore, 6);
+          var scoreFormated = this.zeroPad(scoreManager.currentScore, 6);
           this.scorePainel = this.add.bitmapText(10, 5, "pixelFont", "SCORE: " + scoreFormated, 32);
   
           this.beamSound = this.sound.add("audio_beam");
@@ -164,9 +163,9 @@ export class Game extends Scene
 
         projectile.destroy();
         this.Reset_ship(enemy);
-        this.currentScore += 15;
+        scoreManager.currentScore += 15;
         //add pontos
-        var scoreFormated = this.zeroPad(this.currentScore, 6);
+        var scoreFormated = this.zeroPad(scoreManager.currentScore, 6);
         this.scorePainel.text = "SCORE: " + scoreFormated
 
         this.explosionSound.play()
@@ -178,16 +177,16 @@ export class Game extends Scene
         explosion.setScale(2);
 
         projectile.destroy();
-        this.currentScore += 30;
+        scoreManager.currentScore += 30;
 
-        var scoreFormated = this.zeroPad(this.currentScore, 6);
+        var scoreFormated = this.zeroPad(scoreManager.currentScore, 6);
         this.scorePainel.text = "SCORE: " + scoreFormated
 
         this.explosionSound.play()
       }
 
       Boss_spawn(){
-        if(this.currentScore >= 10 && !this.boss_spawnwed){
+        if(scoreManager.currentScore >= 10 && !this.boss_spawnwed){
           this.boss = new Boss(this, this.game.renderer.width, this.game.renderer.height);
           this.boss_spawnwed = true;
         };
@@ -235,7 +234,7 @@ export class Game extends Scene
     };
 
     Laser_Shot(){
-        var beam = new Beam(this);
+        var beam = new Beam(this, this.player.x, this.player, 'player');
         beam.setScale(2);
         this.beamSound.play();
         
