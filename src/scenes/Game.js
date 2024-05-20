@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import { currentScore, gameSettings, musicConfig } from './MainMenu';
 import { Beam } from '../custom/Beam';
 import { Explosion } from '../custom/Explosion';
+import { Boss } from '../custom/Boss';
 
 
 
@@ -187,7 +188,7 @@ export class Game extends Scene
 
       Boss_spawn(){
         if(this.currentScore >= 10 && !this.boss_spawnwed){
-          this.boss = new Boss(this);
+          this.boss = new Boss(this, this.game.renderer.width, this.game.renderer.height);
           this.boss_spawnwed = true;
         };
       };

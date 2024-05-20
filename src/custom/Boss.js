@@ -1,8 +1,11 @@
+
 export class Boss extends Phaser.GameObjects.Sprite{
 
-    constructor(scene){
-        var x = config.width / 2;
-        var y = config.height - 640;
+  
+
+    constructor(scene, width, height){
+        var x = width / 2;
+        var y = height - 640;
     
         super(scene, x, y, "Boss");
           scene.add.existing(this);
@@ -12,7 +15,7 @@ export class Boss extends Phaser.GameObjects.Sprite{
           scene.boss.add(this);
           
     
-    }
+    };
     
     
     
