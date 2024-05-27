@@ -11,12 +11,12 @@ export class Beam extends Phaser.GameObjects.Sprite {
     // Definir a velocidade do feixe com base no tipo de fonte
     if (sourceType === 'player') {
       this.body.velocity.y = -250; // Velocidade para cima quando disparado pelo jogador
+      scene.projectiles.add(this);
     } else if (sourceType === 'boss') {
       this.body.velocity.y =  250; // Velocidade para baixo quando disparado pelo chefe
-      
+      scene.bossProjectiles.add(this);
     }
 
-    scene.projectiles.add(this);
   }
 
   update() {

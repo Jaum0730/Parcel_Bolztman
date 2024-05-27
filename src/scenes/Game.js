@@ -76,6 +76,7 @@ export class Game extends Scene
           
           //colisores do alien_chefe
           this.physics.add.overlap(this.projectiles, this.boss, this.hitBoss, null, this);
+          this.physics.add.overlap(this.player, this.bossProjectiles, this.hurtPlayer, null, this);
           
   
   
@@ -83,6 +84,7 @@ export class Game extends Scene
           this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this);
           
           this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this);
+
 
           
   
