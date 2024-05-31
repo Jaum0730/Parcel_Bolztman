@@ -82,10 +82,10 @@ export class MainMenu extends Scene
         this.scene.start('Game');
     }
     startPrologue(){
-        this.scene.start('prologo')
+        this.scene.start('Prologue');
     }
     startCreditos(){
-        this.scene.start('creditos')
+        this.scene.start('Credits');
     }
 
 
