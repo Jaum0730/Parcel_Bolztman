@@ -133,8 +133,31 @@ export class Preloader extends Scene
 
 
 
+        // Initialize text objects with empty strings
+        this.text1 = this.add.text(100, 100, 'Use as setas direcionais para mover a nave', { fontSize: '24px', fill: '#ffffff' });
+        this.text2 = this.add.text(420, 150, 'Presione barra de espaço para os disparar', { fontSize: '24px', fill: '#ffffff' });
 
 
+        // Create tweens for the typing effect
+        this.Text1 = this.tweens.add({
+          targets: this.text1,
+          alpha: 0, // Fade the text in and out
+          duration: 3000, // Animation duration in milliseconds
+          ease: 'Sine.easeInOut', // Easing function
+          loop: -1, // Loop the animation infinitely
+          yoyo: true, // Make the animation go back and forth
+
+        });
+        
+        this.Text2 = this.tweens.add({
+          targets: this.text2,
+          alpha: 0, // Fade the text in and out
+          duration: 3000, // Animation duration in milliseconds
+          ease: 'Sine.easeInOut', // Easing function
+          loop: -1, // Loop the animation infinitely
+          yoyo: true, // Make the animation go back and forth
+
+        });
 
 
         // Create the loading text
@@ -150,11 +173,16 @@ export class Preloader extends Scene
                 });
             
               // Start the actual game scene after a short delay
-              this.time.delayedCall(2000, () => {
+              this.time.delayedCall(15000, () => {
                 this.scene.start("MainMenu");
               });
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         //this.scene.start('MainMenu');
     }
+
+    updateText(textObject, fullString, tween) {
+      const value = Math.floor(tween.getValue());
+      textObject.setText(fullString.substr(0, value));
+  }
 }
