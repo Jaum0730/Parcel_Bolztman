@@ -27,6 +27,9 @@ export class Game extends Scene
         this.background2.setPosition(100,100);
         this.background2.setScale(2);
         this.lifes = 4;
+        this.shotsRemaining = 5;
+        this.canShot = true;
+        scoreManager.currentScore = 0;
         
         
         //adicionando inimigos
@@ -76,7 +79,7 @@ export class Game extends Scene
           
           //colisores do alien_chefe
           this.physics.add.overlap(this.projectiles, this.boss, this.hitBoss, null, this);
-          this.physics.add.overlap(this.player, this.bossProjectiles, this.hurtPlayer, null, this);
+          this.physics.add.overlap(this.player, this.bossProjectiles, this.hurtPlayerbyBoss, null, this);
           
   
   
@@ -90,9 +93,12 @@ export class Game extends Scene
   
   
   
-         //vidas
+         //Painel de vidas
           this.life_painel = this.add.bitmapText(width - 200, 5, "pixelFont", "Lifes: " + this.lifes, 32);
-            
+        //Painel de disparos
+        // Criar um painel para exibir os disparos restantes
+          this.shots_painel = this.add.bitmapText(width - 200, 50, "pixelFont", "Shots: " + this.shotsRemaining, 32);
+        //Painel de Pontos
           var scoreFormated = this.zeroPad(scoreManager.currentScore, 6);
           this.scorePainel = this.add.bitmapText(10, 5, "pixelFont", "SCORE: " + scoreFormated, 32);
   
@@ -102,6 +108,7 @@ export class Game extends Scene
           this.music = this.sound.add("music_gameplay");
           this.music.setLoop(true);
           this.music.play(musicConfig);
+          
   
   
           
@@ -112,6 +119,34 @@ export class Game extends Scene
       this.life_painel.text = "Lifes: " + this.lifes
       
       this.Reset_ship(enemy);
+      
+      if(this.player.alpha < 1){
+        return;
+      }
+      
+      var explosion = new Explosion(this, this.player.x, player.y);
+      this.explosionSound.play();
+      
+      this.player.disableBody(true, true);
+      
+      
+      this.time.addEvent({
+        delay: 1000,
+        callback: this.Reset_Player,
+        callbackScope: this,
+        loop: false
+      });
+      
+      this.lifes--;
+      
+      
+    };
+
+
+    hurtPlayerbyBoss(player, BossProjectile){
+      this.life_painel.text = "Lifes: " + this.lifes
+      
+      BossProjectile.destroy();
       
       if(this.player.alpha < 1){
         return;
@@ -294,14 +329,33 @@ export class Game extends Scene
             this.player.setVelocityY(gameSettings.playerSpeed);
             
           }
-          if(Phaser.Input.Keyboard.JustDown(this.spacebar)){
-            if(this.player.active){
-              console.log("fogo!");
-              this.Laser_Shot(this.player, 'player');}
+          if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
+            if(this.canShot){
+              if (this.player.active && this.shotsRemaining > 0) {
+                console.log("fogo!");
+                this.Laser_Shot(this.player, 'player');
+                this.shotsRemaining--;
+                this.shots_painel.setText("Shots: " + this.shotsRemaining);
+              }
+              if(this.shotsRemaining <= 0){ 
+                this.canShot = false
+                this.shots_painel.setText("Shots: " + this.shotsRemaining);
+                this.reloadTimer = this.time.addEvent({
+                delay: 5000,
+                callback: () => {
+                  this.shotsRemaining = 5;
+                  this.canShot = true;
+                  this.shots_painel.setText("Shots: " + this.shotsRemaining); // Atualize o painel de disparos
+                },
+                callbackScope: this,
+                loop: true
+                });
+              }
+            }
           }
-          
-        };
-  
+       };
+
+
       
 
 }
