@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { scoreManager} from './MainMenu';
+import { scoreManager, updateTopScores} from './MainMenu';
 
 export class GameOver extends Scene
 {
@@ -17,14 +17,20 @@ export class GameOver extends Scene
 
         if(scoreManager.currentScore > scoreManager.highScore){
             scoreManager.highScore = scoreManager.currentScore;
+            updateTopScores(scoreManager.highScore);
             this.recordText = this.add.text(this.game.renderer.width / 2, 100, 'New Record: '+ scoreManager.currentScore, { font: '24px Orbitron', fill: '#f7f2ad' })
             .setOrigin(0.5);
+            
+            
 
             
 
         }
-        else this.recordText = this.add.text(this.game.renderer.width / 2, 100, 'Final Score: '+ scoreManager.currentScore, { font: '24px Orbitron', fill: '#f7f2ad' })
+        else { 
+          this.recordText = this.add.text(this.game.renderer.width / 2, 100, 'Final Score: '+ scoreManager.currentScore, { font: '24px Orbitron', fill: '#f7f2ad' })
         .setOrigin(0.5);
+      }
+
   
       this.playAgainButton = this.add.text(this.game.renderer.width / 2, 300, 'Play Again', { font: '24px Orbitron', fill: '#f7f2ad' })
         .setOrigin(0.5)

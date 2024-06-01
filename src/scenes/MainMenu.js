@@ -9,15 +9,7 @@ export class MainMenu extends Scene
 
     create ()
     {
-        if(!localStorage.getItem('top_highScore')){
-			localStorage.setItem('top_highScore',0);
-		}
-		
-		if(scoreManager.highScore > localStorage.getItem('top_highScore')){
-			localStorage.setItem('top_highScore', scoreManager.highScore);
-		} else {
-			scoreManager.highScore = localStorage.getItem('top_highScore');
-        }
+        initTopScores();
         
         this.music = this.sound.add("music");
         this.music.setLoop(true);
@@ -55,7 +47,7 @@ export class MainMenu extends Scene
         //=================================Pontuação================================//
 
 
-        this.txtHighScore = this.add.text(this.game.renderer.width / 2, 430, '->>> RECORDE:'+ scoreManager.highScore +' <<<-', { font: '20px Orbitron', fill: '#f7f2ad' })
+        this.txtHighScore = this.add.text(this.game.renderer.width / 2, 430, '->>> Top 5:'+ localStorage.getItem('topScores')  +' <<<-', { font: '20px Orbitron', fill: '#f7f2ad' })
         .setOrigin(0.5);
         this.txtHighScore.setTintFill(0xf7f2ad, 0xf7f2ad, 0xbf40bf, 0xbf40bf);
 
@@ -87,6 +79,7 @@ export class MainMenu extends Scene
     startCreditos(){
         this.scene.start('Credits');
     }
+
 
 
 }
@@ -123,3 +116,19 @@ export var gameSettings = {
 
 
 };
+
+// Função para inicializar o array de top pontuações
+export function initTopScores() {
+    if (!localStorage.getItem('topScores')) {
+      localStorage.setItem('topScores', JSON.stringify([]));
+    }
+  };
+  
+  // Função para atualizar o array de top pontuações
+export  function updateTopScores(score) {
+    let topScores = JSON.parse(localStorage.getItem('topScores'));
+    topScores.push(score);
+    topScores.sort((a, b) => b - a); // Ordenar em ordem decrescente
+    topScores = topScores.slice(0, 5); // Manter apenas os 5 melhores
+    localStorage.setItem('topScores', JSON.stringify(topScores));
+  };
