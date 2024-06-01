@@ -109,31 +109,31 @@ export class Game extends Scene
     }
 
     hurtPlayer(player, enemy){
-        this.lifes--;
-        this.life_painel.text = "Lifes: " + this.lifes
-        
-        this.Reset_ship(enemy);
-        
-        if(this.player.alpha < 1){
-          return;
-        }
-        
-        var explosion = new Explosion(this, this.player.x, player.y);
-        this.explosionSound.play();
-        
-        this.player.disableBody(true, true);
-        
-        
-        this.time.addEvent({
-          delay: 1000,
-          callback: this.Reset_Player,
-          callbackScope: this,
-          loop: false
-        });
-
-        
-        
-      };
+      this.life_painel.text = "Lifes: " + this.lifes
+      
+      this.Reset_ship(enemy);
+      
+      if(this.player.alpha < 1){
+        return;
+      }
+      
+      var explosion = new Explosion(this, this.player.x, player.y);
+      this.explosionSound.play();
+      
+      this.player.disableBody(true, true);
+      
+      
+      this.time.addEvent({
+        delay: 1000,
+        callback: this.Reset_Player,
+        callbackScope: this,
+        loop: false
+      });
+      
+      this.lifes--;
+      
+      
+    };
 
 
   
