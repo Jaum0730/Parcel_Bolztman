@@ -99,7 +99,7 @@ export class MainMenu extends Scene
 
 }
 
-let _highScore = 0;
+let _highScore = 0
 let _currentScore = 0;
 
 export const scoreManager = {
