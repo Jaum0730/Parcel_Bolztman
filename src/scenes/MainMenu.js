@@ -47,8 +47,8 @@ export class MainMenu extends Scene
         //=================================Pontuação================================//
 
 
-        this.displayTopScores();
-        /*this.txtHighScore = this.add.text(this.game.renderer.width / 2, 430, '->>> Top 5:'+ localStorage.getItem('topScores')  +' <<<-', { font: '20px Orbitron', fill: '#f7f2ad' })
+        
+        this.txtHighScore = this.add.text(this.game.renderer.width / 2, 430, '->>> Top 5:'+ localStorage.getItem('topScores')  +' <<<-', { font: '20px Orbitron', fill: '#f7f2ad' })
         .setOrigin(0.5);
         this.txtHighScore.setTintFill(0xf7f2ad, 0xf7f2ad, 0xbf40bf, 0xbf40bf);*/
 
