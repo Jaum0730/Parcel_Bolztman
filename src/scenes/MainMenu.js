@@ -47,9 +47,10 @@ export class MainMenu extends Scene
         //=================================Pontuação================================//
 
 
-        this.txtHighScore = this.add.text(this.game.renderer.width / 2, 430, '->>> Top 5:'+ localStorage.getItem('topScores')  +' <<<-', { font: '20px Orbitron', fill: '#f7f2ad' })
+        this.displayTopScores();
+        /*this.txtHighScore = this.add.text(this.game.renderer.width / 2, 430, '->>> Top 5:'+ localStorage.getItem('topScores')  +' <<<-', { font: '20px Orbitron', fill: '#f7f2ad' })
         .setOrigin(0.5);
-        this.txtHighScore.setTintFill(0xf7f2ad, 0xf7f2ad, 0xbf40bf, 0xbf40bf);
+        this.txtHighScore.setTintFill(0xf7f2ad, 0xf7f2ad, 0xbf40bf, 0xbf40bf);*/
 
         this.playButton.once('pointerdown', function () {
             this.playButton.setTintFill(0xcf70cf);
@@ -66,8 +67,19 @@ export class MainMenu extends Scene
         this.creditsButton.once('pointerdown', function () {
             this.creditsButton.setTintFill(0xcf70cf);
             this.music.stop();
-            this.time.addEvent({delay: 1000, callback: this.startCreditos, callbackScope: this, loop: false});
+            this.time.addEvent({delay: 1000, 
+                callback: this.startCreditos, 
+                callbackScope: this, 
+                loop: false});
         }, this);
+
+        this.time.addEvent({
+            delay:100,
+            callback: this.displayTopScores,
+            callbackScope: this,
+            loop: false
+
+        },this);
     }
 
     startGame(){
@@ -79,6 +91,34 @@ export class MainMenu extends Scene
     startCreditos(){
         this.scene.start('Credits');
     }
+    displayTopScores() {
+        let topScores = JSON.parse(localStorage.getItem('topScores')) || [];
+    
+        // Create a container for the top scores table
+        let topScoresContainer = this.add.container(this.game.renderer.width / 2, 430);
+    
+        // Create a table header
+        let tableHeader = this.add.text(0, 0, 'Rank | Player | Score', {
+          fontSize: '18px',
+          fill: '#f7f2ad',
+          align: 'center'
+        });
+        topScoresContainer.add(tableHeader);
+    
+        // Add the top scores to the table
+        let rowY = tableHeader.y + 30;
+        topScores.forEach((score, index) => {
+          let rankText = this.add.text(0, rowY, `${index + 1}.`, { fontSize: '16px', fill: '#f7f2ad' });
+          let scoreText = this.add.text(100, rowY, score.toString(), { fontSize: '16px', fill: '#f7f2ad' });
+          topScoresContainer.add([rankText, scoreText]);
+          rowY += 30;
+        });
+    
+        // Center the top scores container
+        topScoresContainer.x -= topScoresContainer.width / 2;
+      }
+
+    
 
 
 
@@ -118,7 +158,7 @@ export var gameSettings = {
 };
 
 // Função para inicializar o array de top pontuações
-export function initTopScores() {
+ function initTopScores() {
     if (!localStorage.getItem('topScores')) {
       localStorage.setItem('topScores', JSON.stringify([]));
     }
