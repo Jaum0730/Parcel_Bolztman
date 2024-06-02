@@ -17,7 +17,7 @@ import { Preloader } from './scenes/Preloader';
 const config = {
     type: Phaser.AUTO,
     width: 1024,
-    height: 720,
+    height: 576,
     parent: 'game-container',
     backgroundColor: '#00000000',
     scale: {

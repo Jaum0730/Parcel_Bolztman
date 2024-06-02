@@ -10,6 +10,9 @@ export class MainMenu extends Scene
     create ()
     {
         initTopScores();
+
+        this.background = this.add.tileSprite(0,0,this.game.renderer.width, this.game.renderer.height, "menu_background");
+        this.background.setPosition(512,288);
         
         this.music = this.sound.add("music");
         this.music.setLoop(true);

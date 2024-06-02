@@ -24,8 +24,8 @@ export class Game extends Scene
       
         
         this.background2 = this.add.tileSprite(0,0,this.game.renderer.width,this.game.renderer.height,"background2");
-        this.background2.setPosition(100,100);
-        this.background2.setScale(2);
+        this.background2.setPosition(512,288);
+        
         this.lifes = 4;
         this.shotsRemaining = 5;
         this.canShot = true;
@@ -232,7 +232,7 @@ export class Game extends Scene
       }
 
       Boss_spawn(scene){
-        if(scoreManager.currentScore >= 10 && !this.boss_spawnwed){
+        if(scoreManager.currentScore >= 100 && !this.boss_spawnwed){
           this.boss = new Boss(this, this.game.renderer.width, this.game.renderer.height, this.player);
           this.boss_spawnwed = true;
 

@@ -5,7 +5,7 @@ export class Boss extends Phaser.GameObjects.Sprite{
 
     constructor(scene, width, height){
         var x = width / 2;
-        var y = height - 640;
+        var y = height/ 6;
     
         super(scene, x, y, "Boss");
           scene.add.existing(this);
