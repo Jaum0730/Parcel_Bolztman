@@ -3,6 +3,7 @@ import { scoreManager, updateTopScores, app, db} from './MainMenu';
 
 
 
+        export var name
         // Criar o elemento de input
         const nameInput = document.createElement('input');
         nameInput.type = 'text';
@@ -20,7 +21,7 @@ import { scoreManager, updateTopScores, app, db} from './MainMenu';
         nameInput.style.border = '1px solid #ccc';
         nameInput.style.borderRadius = '5px';
 
-        var name = nameInput.value
+        
 
 
 export class GameOver extends Scene
@@ -33,6 +34,7 @@ export class GameOver extends Scene
     create ()
     {
       
+        this.name;
         nameInput.style.display = 'block'
         // Adicionar o input ao document
         document.body.appendChild(nameInput);
@@ -62,6 +64,8 @@ export class GameOver extends Scene
         .setInteractive();
   
       this.playAgainButton.once('pointerdown', function() {
+        this.name = nameInput.value
+        name = this.name
         // Remove as cenas anteriores e inicia o menu novamente
         this.time.addEvent({
           delay: 1000, 

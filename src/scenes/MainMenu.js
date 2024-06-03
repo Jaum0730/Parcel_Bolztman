@@ -1,7 +1,7 @@
 import { Scene } from 'phaser';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -159,12 +159,40 @@ export var gameSettings = {
     }
 
   };
+
+  let _topScoresString = '';
+
+export const topScoresManager = {
+  get topScoresString() {
+    return _topScoresString;
+  },
+  set topScoresString(newTopScoresString) {
+    _topScoresString = newTopScoresString;
+  },
+};
   
   // Função para atualizar top pontuações na variável local
-export  function updateTopScores(score, name) {
-    const topScores = localStorage.getItem('topScores');
-    console.log("updateTopScores.name = ", name)
-    if(score > topScores){
-        localStorage.setItem('topScores', score);
+export  async function updateTopScores(score, name) {
+    try {
+      // Salvar o novo score no Firestore
+      await addDoc(collection(db, "topScores"), {
+        name: name,
+        score: score,
+        timestamp: new Date().getTime()
+      });
+  
+      // Obter os 10 melhores scores do Firestore
+      const topScoresRef = collection(db, "topScores");
+      const topScoresQuery = query(topScoresRef, orderBy("score", "desc"), limit(5));
+      const topScoresSnapshot = await getDocs(topScoresQuery);
+  
+      // Atualizar a variável topScoresString com os 10 melhores scores
+      topScoresSnapshot.docs.forEach((doc) => {
+        const { name, score } = doc.data();
+        topScoresManager.topScoresString += `${name}: ${score}\n`;
+        console.log("topscore = ", topScoresManager.topScoresString)
+      });
+    } catch (error) {
+      console.error("Erro ao atualizar os melhores scores:", error);
     }
   };
