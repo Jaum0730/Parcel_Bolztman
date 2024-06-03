@@ -1,4 +1,21 @@
 import { Scene } from 'phaser';
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyD2HAqCBowazO4V_LgGmeOb8KGn2JpS8pc",
+  authDomain: "boltzmanlagrange.firebaseapp.com",
+  projectId: "boltzmanlagrange",
+  storageBucket: "boltzmanlagrange.appspot.com",
+  messagingSenderId: "515936640801",
+  appId: "1:515936640801:web:d72c908a5613c8df7fe860"
+};
+
+// Initialize Firebase
+export const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
 export class MainMenu extends Scene
 {
@@ -54,7 +71,7 @@ export class MainMenu extends Scene
         this.txtHighScore = this.add.text(this.game.renderer.width / 2, 430, '->>> Top Score: '+ localStorage.getItem('topScores')  +' <<<-', { font: '20px Orbitron', fill: '#f7f2ad' })
         .setOrigin(0.5);
         this.txtHighScore.setTintFill(0xf7f2ad, 0xf7f2ad, 0xbf40bf, 0xbf40bf);
-
+        //=========================================================================//
         this.playButton.once('pointerdown', function () {
             this.playButton.setTintFill(0xcf70cf);
             this.music.stop();
@@ -144,8 +161,9 @@ export var gameSettings = {
   };
   
   // Função para atualizar top pontuações na variável local
-export  function updateTopScores(score) {
+export  function updateTopScores(score, name) {
     const topScores = localStorage.getItem('topScores');
+    console.log("updateTopScores.name = ", name)
     if(score > topScores){
         localStorage.setItem('topScores', score);
     }
