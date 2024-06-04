@@ -1,5 +1,10 @@
 import { Scene } from 'phaser';
 
+import { nameInput } from './GameOver'; 
+
+
+
+
 export class Preloader extends Scene
 {
     constructor ()
@@ -142,19 +147,36 @@ export class Preloader extends Scene
               this.loadingAnimation = this.tweens.add({
                 targets: this.loadingText,
                 alpha: 0.5, // Fade the text in and out
-                duration: 1500, // Animation duration in milliseconds
+                duration: 1000, // Animation duration in milliseconds
                 ease: 'Sine.easeInOut', // Easing function
                 loop: -1, // Loop the animation infinitely
                 yoyo: true // Make the animation go back and forth
                 });
             
-              // Start the actual game scene after a short delay
-              this.time.delayedCall(15000, () => {
+                // Start the actual game scene after a short delay
+                this.time.delayedCall(5000, () => {
                 this.scene.start("MainMenu");
               });
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         //this.scene.start('MainMenu');
+
+        nameInput.type = 'text';
+        nameInput.id = 'nameInput';
+        nameInput.placeholder = 'Digite seu nome';
+        // Mostrar o input
+        nameInput.style.display = 'none';
+
+        nameInput.style.position = 'absolute';
+        nameInput.style.top = '50%';
+        nameInput.style.left = '50%';
+        nameInput.style.transform = 'translate(-50%, -50%)';
+        nameInput.style.padding = '10px';
+        nameInput.style.fontSize = '16px';
+        nameInput.style.border = '1px solid #ccc';
+        nameInput.style.borderRadius = '5px';
+        nameInput.hidden = false;
+        nameInput.disabled = false;
     }
 
     updateText(textObject, fullString, tween) {

@@ -6,6 +6,7 @@ import { Prologue } from './scenes/Prologue';
 import { Credits } from './scenes/Credits';
 import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
+import { TopScores } from './scenes/TopScores';
 
 
 //  Find out more information about the Game Config at:
@@ -29,6 +30,7 @@ const config = {
         Preloader,
         Prologue,
         Credits,
+        TopScores,
         MainMenu,
         Game,
         GameOver,
