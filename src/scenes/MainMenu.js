@@ -1,21 +1,6 @@
 import { Scene } from 'phaser';
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "firebase/firestore";
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyD2HAqCBowazO4V_LgGmeOb8KGn2JpS8pc",
-  authDomain: "boltzmanlagrange.firebaseapp.com",
-  projectId: "boltzmanlagrange",
-  storageBucket: "boltzmanlagrange.appspot.com",
-  messagingSenderId: "515936640801",
-  appId: "1:515936640801:web:d72c908a5613c8df7fe860"
-};
-
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+import {app, db} from '../db/db'
 
 export class MainMenu extends Scene
 {
@@ -41,7 +26,7 @@ export class MainMenu extends Scene
         
 
 
-        this.Logo = this.add.bitmapText(this.game.renderer.width /6, 200, 'pixelFont', 'BOLTZMAN LAGRANGE', 70)
+        
         
 
         //=================================Botões do Menu================================//
@@ -77,6 +62,15 @@ export class MainMenu extends Scene
           this.music.stop();
           this.time.addEvent({delay: 1000, callback: this.startRanking, callbackScope: this, loop: false});
         }, this);
+
+        const backButton = this.add.text(this.game.renderer.width / 2, 450, "<<Global Scores>>", { fontSize: '18px', fill: '#f7f2ad' })
+        .setOrigin(0.5);
+        
+        backButton.setInteractive();
+        backButton.on('pointerdown', () => {
+            this.scene.start("TopScores");
+        });
+
 
 
         //=========================================================================//
@@ -119,12 +113,6 @@ export class MainMenu extends Scene
     startCreditos(){
         this.scene.start('Credits');
     }
-    startRanking(){
-      this.scene.start('TopScores');
-    }
-
-
-    
 
 
 
