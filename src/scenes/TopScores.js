@@ -1,6 +1,6 @@
 import { Scene } from "phaser";
-import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
-import { db } from '../db/db';
+import { topScoresManager } from "./MainMenu";
+
 
 
 
@@ -16,6 +16,8 @@ export class TopScores extends Scene{
     }
     
     create(){
+
+
 
        
 
@@ -34,7 +36,7 @@ export class TopScores extends Scene{
         this.top1 = this.add.text(
             this.game.renderer.width / 2, 
             150, 
-            'TOP 1: '+ this.get5TopScores(0), 
+            'TOP 1: '+ topScoresManager.topScoresString, 
             { 
                 font: '24px Orbitron', 
                 fill: '#fff'
@@ -108,27 +110,7 @@ export class TopScores extends Scene{
     }
 
 
-     async get5TopScores(index) {
-        try{
-    
-        const topScoresRef = collection(db, "topScores");
-        const topScoresQuery = query(topScoresRef, orderBy("score", "desc"), limit(5));
-        const topScoresSnapshot = await getDocs(topScoresQuery);
-        
-    
-        const topScores = [];
-        topScoresSnapshot.forEach((doc) => {
-          topScores.push(doc.data().score);
-        });
-      
-        return topScores[index];
-    
-    }
-    catch (error) {
-        console.error("Erro ao requisitar os melhores scores:", error);
-      }
 
-      };
 
     // função para iniciar a animação de pulsação do texto
     startPulse(text) {

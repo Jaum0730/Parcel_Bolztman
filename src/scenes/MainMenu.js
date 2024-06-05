@@ -121,6 +121,30 @@ export class MainMenu extends Scene
 
 }
 
+export async function get5TopScores() {
+  try{
+
+  const topScoresRef = collection(db, "topScores");
+  const topScoresQuery = query(topScoresRef, orderBy("score", "desc"), limit(5));
+  const topScoresSnapshot = await getDocs(topScoresQuery);
+  
+
+  const topScores = [];
+  topScoresSnapshot.forEach((doc) => {
+    topScores.push(doc.data());
+  });
+
+  return topScores;
+
+}
+catch (error) {
+  console.error("Erro ao rquisitar os melhores scores:", error);
+}
+
+};
+
+
+
 let _highScore = 0
 let _currentScore = 0;
 
@@ -162,7 +186,7 @@ export var gameSettings = {
 
   };
 
-  let _topScoresString = '';
+  let _topScoresString = [];
 
 export const topScoresManager = {
   get topScoresString() {
@@ -193,12 +217,14 @@ export  async function updateTopScores(score, name) {
     const yourPositionQuery = query(topScoresRef, orderBy("score", "desc"));
     const yourPositionSnapshot = await getDocs(yourPositionQuery);
     let yourPosition = 0
+    
 
     yourPositionSnapshot.docs.forEach((doc) => {
       // console.log("lido!")
       yourPosition += 1
       
       // para cada round verificar se "actualName" == "name"
+
 
 
     });
