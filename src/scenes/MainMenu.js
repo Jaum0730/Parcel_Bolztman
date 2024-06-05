@@ -1,6 +1,9 @@
 import { Scene } from 'phaser';
 // Import the functions you need from the SDKs you need
 import {app, db} from '../db/db'
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "firebase/firestore";
+
+
 
 export class MainMenu extends Scene
 {
@@ -170,43 +173,7 @@ export const topScoresManager = {
   },
 };
 
-// Função para gerar IDs sequenciais
-// async function generateSequentialId() {
-//   try {
-//       // Obter a referência da coleção
-//       const topScoresRef = collection(db, "topScores");
 
-//       // Obter os documentos na coleção, ordenados por ID em ordem decrescente
-//       const querySnapshot = await getDocs(query(topScoresRef, orderBy('__name__', 'desc'), limit(1)));
-
-//       // Verificar se há documentos
-//       if (!querySnapshot.empty) {
-//           // Obter o ID do último documento
-//           const lastDocId = querySnapshot.docs[0].id;
-//           // Converter o ID para número
-//           const lastIdNumber = parseInt(lastDocId, 10);
-//           // Incrementar o ID para obter o próximo ID sequencial
-//           return (lastIdNumber + 1).toString();
-//       } else {
-//           // Se não houver documentos, retornar 1 como o primeiro ID
-//           return '1';
-//       }
-//   } catch (error) {
-//       console.error("Erro ao gerar ID sequencial:", error);
-//   }
-// }
-
-// // Função para adicionar um novo documento com um ID sequencial
-// export async function addSequentialDoc(collectionRef, data) {
-//   try {
-//       // Gerar o próximo ID sequencial
-//       const sequentialId = await generateSequentialId();
-//       // Adicionar o documento com o ID sequencial gerado
-//       await addDoc(collectionRef, data); // Remova o campo 'id' daqui
-//   } catch (error) {
-//       console.error("Erro ao adicionar documento com ID sequencial:", error);
-//   }
-// }
   
   // Função para atualizar top pontuações na variável local  // Função para atualizar top pontuações na variável local
 export  async function updateTopScores(score, name) {
@@ -244,7 +211,12 @@ export  async function updateTopScores(score, name) {
       topScoresManager.topScoresString += `${name}: ${score}\n`;
       console.log("TopScore = ", topScoresManager.topScoresString)
     });
-  } catch (error) {
+  } 
+  
+  catch (error) {
     console.error("Erro ao atualizar os melhores scores:", error);
   }
+
+  
+  
 };
