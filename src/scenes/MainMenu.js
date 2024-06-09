@@ -1,9 +1,7 @@
 import { Scene } from 'phaser';
 // Import the functions you need from the SDKs you need
-import {app, db} from '../db/db'
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "firebase/firestore";
-
-
+import {db} from '../db/db'
+import { collection, addDoc, getDocs, query, orderBy, limit } from "firebase/firestore";
 
 export class MainMenu extends Scene
 {
@@ -22,15 +20,6 @@ export class MainMenu extends Scene
         this.music = this.sound.add("music");
         this.music.setLoop(true);
         this.music.play(musicConfig);
-        
-
-
-
-        
-
-
-        
-        
 
         //=================================Botões do Menu================================//
         this.playButton = this.add.text(this.game.renderer.width / 2, 300, 'PLAY', { font:'37px Orbitron', fill: '#f7f2ad' })
@@ -44,7 +33,6 @@ export class MainMenu extends Scene
 
         //=================================Colorir Botões do Menu================================//
 
-
         this.input.on('gameobjectover', function (pointer, gameObject) {
                 gameObject.setTintFill(0xcf70cf);
             });
@@ -54,8 +42,6 @@ export class MainMenu extends Scene
         
         //=================================Pontuação================================//
 
-
-        
         this.txtHighScore = this.add.text(this.game.renderer.width / 2, 430, '->>> Top Score: '+ localStorage.getItem('topScores')  +' <<<-', { font: '20px Orbitron', fill: '#f7f2ad' })
         .setOrigin(0.5);
         this.txtHighScore.setTintFill(0xf7f2ad, 0xf7f2ad, 0xbf40bf, 0xbf40bf);
@@ -67,14 +53,11 @@ export class MainMenu extends Scene
         }, this);
 
         const backButton = this.add.text(this.game.renderer.width / 2, 450, "<<Global Scores>>", { fontSize: '18px', fill: '#f7f2ad' })
-        .setOrigin(0.5);
-        
-        backButton.setInteractive();
-        backButton.on('pointerdown', () => {
+        .setOrigin(0.5)
+        .setInteractive()
+        .on('pointerdown', () => {
             this.scene.start("TopScores");
         });
-
-
 
         //=========================================================================//
         this.playButton.once('pointerdown', function () {
@@ -116,34 +99,28 @@ export class MainMenu extends Scene
     startCreditos(){
         this.scene.start('Credits');
     }
-
-
-
 }
 
-export async function get5TopScores() {
-  try{
+// export async function get5TopScores() {
+//   try{
 
-  const topScoresRef = collection(db, "topScores");
-  const topScoresQuery = query(topScoresRef, orderBy("score", "desc"), limit(5));
-  const topScoresSnapshot = await getDocs(topScoresQuery);
+//   const topScoresRef = collection(db, "topScores");
+//   const topScoresQuery = query(topScoresRef, orderBy("score", "desc"), limit(5));
+//   const topScoresSnapshot = await getDocs(topScoresQuery);
   
 
-  const topScores = [];
-  topScoresSnapshot.forEach((doc) => {
-    topScores.push(doc.data());
-  });
+//   const topScores = [];
+//   topScoresSnapshot.forEach((doc) => {
+//     topScores.push(doc.data());
+//   });
 
-  return topScores;
+//   return topScores;
 
-}
-catch (error) {
-  console.error("Erro ao rquisitar os melhores scores:", error);
-}
-
-};
-
-
+//   }
+//   catch (error) {
+//     console.error("Erro ao rquisitar os melhores scores:", error);
+//   }
+// };
 
 let _highScore = 0
 let _currentScore = 0;
@@ -173,17 +150,14 @@ export var musicConfig = {
 
 export var gameSettings = {
     playerSpeed: 200,
-
-
-
 };
 
-// Função para inicializar o array de top pontuações
+
+// função para inicializar o array de top pontuações
  function initTopScores() {
     if (!localStorage.getItem('topScores')) {
       localStorage.setItem('topScores', 0);
     }
-
   };
 
   let _topScoresString = [];
@@ -197,52 +171,108 @@ export const topScoresManager = {
   },
 };
 
-
-  
-  // Função para atualizar top pontuações na variável local  // Função para atualizar top pontuações na variável local
-export  async function updateTopScores(score, name) {
+// Função para atualizar top pontuações na variável local
+export  async function sendScoresToDatabase(score, name) {
   try {
     // Salvar o novo score no Firestore
     await addDoc(collection(db, "topScores"), {
       name: name,
       score: score,
-      timestamp: new Date().getTime()
-    });
-
-    // Obter os 5 melhores scores do Firestore
-    const topScoresRef = collection(db, "topScores");
-    const topScoresQuery = query(topScoresRef, orderBy("score", "desc"), limit(5));
-    const topScoresSnapshot = await getDocs(topScoresQuery);
-    
-    const yourPositionQuery = query(topScoresRef, orderBy("score", "desc"));
-    const yourPositionSnapshot = await getDocs(yourPositionQuery);
-    let yourPosition = 0
-    
-
-    yourPositionSnapshot.docs.forEach((doc) => {
-      // console.log("lido!")
-      yourPosition += 1
+      timestamp: new Date()
+      });
       
-      // para cada round verificar se "actualName" == "name"
-
-
-
-    });
-
-    console.log("Sua posição: " + yourPosition)
-
-    // Atualizar a variável topScoresString com os 5 melhores scores
-    topScoresSnapshot.docs.forEach((doc) => {
-      const { name, score } = doc.data();
-      topScoresManager.topScoresString += `${name}: ${score}\n`;
-      console.log("TopScore = ", topScoresManager.topScoresString)
-    });
+    // const yourPositionQuery = query(topScoresRef, orderBy("score", "desc"));
+    // const yourPositionSnapshot = await getDocs(yourPositionQuery);
+    // let yourPosition = 0
+    
+    // yourPositionSnapshot.docs.forEach((doc) => {
+    //   // console.log("lido!")
+    //   yourPosition += 1
+      
+    //   // para cada round verificar se "actualName" == "name"
+      
+    //   });
+      
+    //   console.log("Sua posição: " + yourPosition)
   } 
   
   catch (error) {
     console.error("Erro ao atualizar os melhores scores:", error);
   }
-
-  
   
 };
+
+export const topScoresManager_Top5 = {
+  top1: '',
+  top2: '',
+  top3: '',
+  top4: '',
+  top5: '',
+  topScoresString: ''
+};
+
+// Função para atualizar o topScoresManager
+async function updateTopScoresManager(topScores) {
+  topScoresManager.topScoresString = '';
+
+  // const topScoresRef = collection(db, "topScores");
+  // const topScoresQuery = query(topScoresRef, orderBy("score", "desc"), limit(5));
+  // const topScoresSnapshot = await getDocs(topScoresQuery);
+
+  topScores.forEach((doc, index) => {
+    const { name, score } = doc;
+    const scoreString = `${name}: ${score}`;
+
+    switch (index) {
+      case 0:
+        topScoresManager.top1 = scoreString;
+        break;
+
+      case 1:
+        topScoresManager.top2 = scoreString;
+        break;
+
+      case 2:
+        topScoresManager.top3 = scoreString;
+        break;
+
+      case 3:
+        topScoresManager.top4 = scoreString;
+        break;
+
+      case 4:
+        topScoresManager.top5 = scoreString;
+        break;
+
+      default:
+        break;
+    }
+    topScoresManager.topScoresString += `${scoreString}\n`;
+  });
+
+  console.log("Top Scores:");
+  console.log("Top 1 = ", topScoresManager.top1);
+  console.log("Top 2 = ", topScoresManager.top2);
+  console.log("Top 3 = ", topScoresManager.top3);
+  console.log("Top 4 = ", topScoresManager.top4);
+  console.log("Top 5 = ", topScoresManager.top5);
+}
+
+// Função para atualizar os top scores no Firestore e chamar a função updateTopScoresManager
+export async function updateTopScores() {
+  try {
+    // Obter os 5 melhores scores do Firestore
+    const topScoresRef = collection(db, "topScores");
+    const topScoresQuery = query(topScoresRef, orderBy("score", "desc"), limit(5));
+    const topScoresSnapshot = await getDocs(topScoresQuery);
+
+    // Cria um array de objetos com os dados dos top scores
+    const topScores = topScoresSnapshot.docs.map(doc => doc.data());
+
+    // Atualizar o topScoresManager
+    updateTopScoresManager(topScores);
+
+  } catch (error) {
+    console.error("Erro ao atualizar os melhores scores:", error);
+  }
+}

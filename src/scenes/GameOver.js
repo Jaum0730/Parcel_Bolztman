@@ -1,6 +1,6 @@
 import { Scene } from 'phaser';
-import { scoreManager, updateTopScores, app, db} from './MainMenu';
-import { getMultiFactorResolver } from 'firebase/auth/web-extension';
+import { scoreManager, sendScoresToDatabase, app, db} from './MainMenu';
+
 
 
 
@@ -88,12 +88,12 @@ export class GameOver extends Scene
     EndGame(){
       if(scoreManager.currentScore > scoreManager.highScore){
         scoreManager.highScore = scoreManager.currentScore;
-        updateTopScores(scoreManager.highScore, name );
+        sendScoresToDatabase(scoreManager.highScore, name );
         
       }
       else { 
         
-        updateTopScores(scoreManager.currentScore, name);
+        sendScoresToDatabase(scoreManager.currentScore, name);
         
       }
       
