@@ -26,8 +26,8 @@ export class Game extends Scene
         this.background2 = this.add.tileSprite(0,0,this.game.renderer.width,this.game.renderer.height,"background2");
         this.background2.setPosition(512,288);
         
-        this.lifes = 0;
-        this.shotsRemaining = 5;
+        this.lifes = 4;
+        this.shotsRemaining = 15;
         this.canShot = true;
         scoreManager.currentScore = 0;
         
